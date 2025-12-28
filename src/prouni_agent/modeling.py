@@ -25,7 +25,7 @@ NUMERIC_FEATURES = [
     "IDADE",
 ]
 
-def build_model_pipeline() -> Pipeline:
+def build_pipeline() -> Pipeline:
     """Constrói o pipeline de modelagem.
 
     Returns:
