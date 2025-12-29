@@ -8,9 +8,9 @@ import pandas as pd
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.model_selection import train_test_split
 
-from prouni_agent.data import read_prouni_csv, basic_clean
-from prouni_agent.features import add_age_feature, normalize_text_columns, make_xy
-from prouni_agent.modeling import build_pipeline, ensure_columns
+from src.prouni_agent.data import read_prouni_csv, basic_clean
+from src.prouni_agent.features import add_age_feature, normalize_text_columns, make_xy
+from src.prouni_agent.modeling import build_pipeline, ensure_columns
 
 def train(data_path: Path, out_path: Path) -> None:
     df = read_prouni_csv(data_path)

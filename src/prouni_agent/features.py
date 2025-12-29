@@ -2,6 +2,7 @@ from __future__ import annotations # type hint in runtime
 
 import re
 import unicodedata
+import numpy as np
 import pandas as pd
 
 TEXT_COLS = [
@@ -38,8 +39,8 @@ def _normalize_text(s: str) -> str:
 def add_age_feature(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
-    # Parse data nascimento
-    dt = pd.to_datetime(df["DATA_NASCIMENTO"], errors="coerce", dayfirst=False)
+    # Parse data nascimento (formato brasileiro: dd/mm/yyyy)
+    dt = pd.to_datetime(df["DATA_NASCIMENTO"], errors="coerce", dayfirst=True)
     birth_year = dt.dt.year
     df["IDADE"] = (df["ANO_CONCESSAO_BOLSA"].astype("Int64") - birth_year.astype("Int64")).astype("Int64")
     df.loc[(df["IDADE"] < 14) | (df["IDADE"] > 80), "IDADE"] = pd.NA
@@ -59,6 +60,8 @@ def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
     for col in TEXT_COLS:
         df[col] = df[col].astype("string")
         df[col] = df[col].map(lambda x: _normalize_text(x) if isinstance(x, str) else x)
+        # Converter para object dtype (np.nan) para compatibilidade com sklearn
+        df[col] = df[col].astype("object").fillna(np.nan)
     return df
 
 def make_xy(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
@@ -86,6 +89,8 @@ def make_xy(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         return pd.NA
     
     y = y_raw.map(map_target)
+    # Converter para object dtype (np.nan) para compatibilidade com sklearn
+    y = y.astype("object").fillna(np.nan)
 
     x = df.drop(columns=["TIPO_BOLSA"])
 

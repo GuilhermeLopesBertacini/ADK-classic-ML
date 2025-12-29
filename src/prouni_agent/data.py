@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import numpy as np
 import pandas as pd
 
 REQUIRED_COLUMNS = [
@@ -60,5 +61,7 @@ def basic_clean(df: pd.DataFrame) -> pd.DataFrame:
     for col in obj_cols:
         df[col] = df[col].astype("string").str.strip()
         df.loc[df[col].isin(["", "NA", "N/A", "NULL", "None"]), col] = pd.NA
+        # Converter para object dtype (np.nan) para compatibilidade com sklearn
+        df[col] = df[col].astype("object").fillna(np.nan)
 
     return df

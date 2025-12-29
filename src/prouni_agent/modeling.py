@@ -34,7 +34,7 @@ def build_pipeline() -> Pipeline:
 
     cat_pipe = Pipeline(
         steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent"))
+            ("imputer", SimpleImputer(strategy="most_frequent")),
             ("ohe", OneHotEncoder(handle_unknown="ignore", min_frequency=10))
         ]
     )
@@ -59,8 +59,7 @@ def build_pipeline() -> Pipeline:
         n_jobs=None, # sklearn uses liblinear default
         # altera o peso das classes para lidar com desbalanceamento
         class_weight="balanced",
-        solver="lbfgs",
-        multi_class="auto"
+        solver="lbfgs"
     )
 
     pipe = Pipeline(
