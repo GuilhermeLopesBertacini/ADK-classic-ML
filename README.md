@@ -16,10 +16,9 @@ O modelo é exposto via API REST (FastAPI) e inclui integração com Google Gemi
 
 ## Instalação
 
-```bash
-git clone <repository-url>
-cd be-solution
+com o repositório clonado:
 
+```bash
 make install
 ```
 
